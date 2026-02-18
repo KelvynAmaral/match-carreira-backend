@@ -1,8 +1,29 @@
 version: '3.8'
+
 services:
+  # --- API SPRING BOOT ---
+  app:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_USERNAME=admin
+      - DB_PASSWORD=password123
+      - REDIS_HOST=redis
+      - JWT_SECRET=match-carreira-secret-key-com-pelo-menos-32-caracteres
+      - JPA_DDL=update
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  # --- BANCO DE DADOS POSTGRESQL ---
   db:
     image: postgres:16
-    container_name: match-carreira-db
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password123
@@ -11,10 +32,15 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d match_carreira_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # --- CACHE / SESSION REDIS ---
   redis:
     image: redis:alpine
-    container_name: match-carreira-redis
     ports:
       - "6379:6379"
 
