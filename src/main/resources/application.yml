@@ -4,10 +4,10 @@ spring:
 
   # --- CONFIGURACAO DE E-MAIL (MAILTRAP) ---
   mail:
-    host: sandbox.smtp.mailtrap.io
-    port: 2525
-    username: bacd2d9b4454f9
-    password: 03892fe19ad78f
+    host: ${MAIL_HOST:sandbox.smtp.mailtrap.io}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:seu_user_fake}
+    password: ${MAIL_PASSWORD:sua_senha_fake}
     properties:
       mail:
         smtp:
@@ -17,16 +17,18 @@ spring:
 
   # --- CONFIGURACAO DO BANCO DE DADOS ---
   datasource:
-    url: jdbc:postgresql://localhost:5432/match_carreira_db
-    username: admin
-    password: password123
+    # No Docker, o host deve ser o nome do serviço (ex: db)
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/match_carreira_db
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:password123}
     driver-class-name: org.postgresql.Driver
 
   # --- CONFIGURACAO DO JPA / HIBERNATE ---
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      # Mudamos para 'validate' pois agora usamos Flyway para evoluir o banco
+      ddl-auto: validate
+    show-sql: false # Em produção, deixe false para não poluir os logs
     properties:
       hibernate:
         format_sql: true
@@ -36,8 +38,8 @@ spring:
   # --- CACHE (REDIS) ---
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
 # --- CONFIGURACAO DO SWAGGER (SPRINGDOC) ---
 springdoc:
@@ -51,9 +53,11 @@ springdoc:
 api:
   security:
     token:
+      # Nunca deixe a chave real aqui. Use sempre variável de ambiente.
       secret: ${JWT_SECRET:match-carreira-secret-key-32-chars-minimum}
 
 # --- LOGGING ---
 logging:
   level:
-    org.hibernate.SQL: DEBUG
+    root: INFO
+    org.hibernate.SQL: INFO # Reduzi para INFO para evitar logs excessivos no GitHub
