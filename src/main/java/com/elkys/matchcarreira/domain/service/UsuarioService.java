@@ -1,6 +1,6 @@
 package com.elkys.matchcarreira.domain.service;
 
-import com.elkys.matchcarreira.api.dto.UsuarioRequest;
+import com.elkys.matchcarreira.api.dto.usuario.UsuarioRequest;
 import com.elkys.matchcarreira.domain.model.Curriculo;
 import com.elkys.matchcarreira.domain.model.Usuario;
 import com.elkys.matchcarreira.domain.repository.CurriculoRepository;

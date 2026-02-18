@@ -1,8 +1,8 @@
 package com.elkys.matchcarreira.domain.service;
 
-import com.elkys.matchcarreira.api.dto.ExperienciaRequest;
-import com.elkys.matchcarreira.api.dto.FormacaoRequest;
-import com.elkys.matchcarreira.api.dto.PerfilAtualizacaoRequest;
+import com.elkys.matchcarreira.api.dto.perfil.ExperienciaRequest;
+import com.elkys.matchcarreira.api.dto.perfil.FormacaoRequest;
+import com.elkys.matchcarreira.api.dto.perfil.PerfilAtualizacaoRequest;
 import com.elkys.matchcarreira.domain.model.Curriculo;
 import com.elkys.matchcarreira.domain.model.ExperienciaProfissional;
 import com.elkys.matchcarreira.domain.model.FormacaoAcademica;
