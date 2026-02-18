@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: match-carreira-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/match_carreira_db
+    username: admin
+    password: password123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # 'update' cria/altera as tabelas automaticamente sem apagar os dados existentes
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        # Força o Hibernate a usar o dialeto correto do Postgres 16
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Garante que nomes CamelCase no Java virem snake_case no banco automaticamente
+        physical_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
