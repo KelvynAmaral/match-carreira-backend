@@ -15,13 +15,17 @@ import java.util.ArrayList;
 public class Curriculo {
 
     @Id
-    private UUID id; // SEM @GeneratedValue. O ID vem do Usuario.
+    private UUID id;
 
     @OneToOne
-    @MapsId // Faz o ID desta classe ser o mesmo ID da classe Usuario
+    @MapsId
     @JoinColumn(name = "usuario_id")
     @JsonIgnore
     private Usuario usuario;
+
+    private String cidade;
+
+    private String estado;
 
     @Column(name = "resumo_profissional", columnDefinition = "TEXT")
     private String resumoProfissional;

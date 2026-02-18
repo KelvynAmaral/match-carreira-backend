@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario implements UserDetails { // Implementação crucial
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,6 +34,11 @@ public class Usuario implements UserDetails { // Implementação crucial
     private String senha;
 
     private String nome;
+
+    private String telefone;
+
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
 
     @Column(name = "criado_em")
     private LocalDateTime criadoEm;
@@ -50,43 +56,30 @@ public class Usuario implements UserDetails { // Implementação crucial
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Define o nível de acesso. Como Business Owner, todos por enquanto são ROLE_USER.
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     @JsonIgnore
-    public String getPassword() {
-        return senha;
-    }
+    public String getPassword() { return senha; }
 
     @Override
     @JsonIgnore
-    public String getUsername() {
-        return email; // O email é o nosso login/username
-    }
+    public String getUsername() { return email; }
 
     @Override
     @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return true; // Conta nunca expira
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
     @JsonIgnore
-    public boolean isAccountNonLocked() {
-        return true; // Conta nunca bloqueia
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
     @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return true; // Senha nunca expira
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
     @JsonIgnore
-    public boolean isEnabled() {
-        return true; // Usuário sempre ativo
-    }
+    public boolean isEnabled() { return true; }
 }
