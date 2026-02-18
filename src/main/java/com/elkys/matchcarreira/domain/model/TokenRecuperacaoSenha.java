@@ -2,6 +2,7 @@ package com.elkys.matchcarreira.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,11 +24,15 @@ public class TokenRecuperacaoSenha {
     private String token;
 
     @OneToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
     @Column(nullable = false)
     private LocalDateTime dataExpiracao;
+
+    @CreationTimestamp
+    @Column(name = "criado_em", updatable = false)
+    private LocalDateTime criadoEm;
 
     public boolean estaExpirado() {
         return LocalDateTime.now().isAfter(dataExpiracao);

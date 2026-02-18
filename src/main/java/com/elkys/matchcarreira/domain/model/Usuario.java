@@ -3,15 +3,16 @@ package com.elkys.matchcarreira.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -40,18 +41,12 @@ public class Usuario implements UserDetails {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    @Column(name = "criado_em")
+    @CreationTimestamp // Simplifica o seu código, o Hibernate cuida disso
+    @Column(name = "criado_em", updatable = false)
     private LocalDateTime criadoEm;
 
-    @PrePersist
-    protected void onCreate() {
-        this.criadoEm = LocalDateTime.now();
-    }
-
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Curriculo curriculo;
-
-    // --- MÉTODOS DO USERDETAILS ---
 
     @Override
     @JsonIgnore
