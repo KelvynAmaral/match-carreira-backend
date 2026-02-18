@@ -1,6 +1,6 @@
 package com.elkys.matchcarreira.infrastructure.exception;
 
-import com.elkys.matchcarreira.api.dto.ErroResponse;
+import com.elkys.matchcarreira.api.dto.comum.ErroResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
