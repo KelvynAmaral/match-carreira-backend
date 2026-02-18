@@ -17,7 +17,6 @@ spring:
 
   # --- CONFIGURACAO DO BANCO DE DADOS ---
   datasource:
-    # No Docker, o host deve ser o nome do serviço (ex: db)
     url: jdbc:postgresql://${DB_HOST:localhost}:5432/match_carreira_db
     username: ${DB_USERNAME:admin}
     password: ${DB_PASSWORD:password123}
@@ -26,9 +25,9 @@ spring:
   # --- CONFIGURACAO DO JPA / HIBERNATE ---
   jpa:
     hibernate:
-      # Mudamos para 'validate' pois agora usamos Flyway para evoluir o banco
+
       ddl-auto: validate
-    show-sql: false # Em produção, deixe false para não poluir os logs
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -53,11 +52,10 @@ springdoc:
 api:
   security:
     token:
-      # Nunca deixe a chave real aqui. Use sempre variável de ambiente.
       secret: ${JWT_SECRET:match-carreira-secret-key-32-chars-minimum}
 
 # --- LOGGING ---
 logging:
   level:
     root: INFO
-    org.hibernate.SQL: INFO # Reduzi para INFO para evitar logs excessivos no GitHub
+    org.hibernate.SQL: INFO
