@@ -71,6 +71,16 @@ A arquitetura do **MatchCarreira** foi refatorada para eliminar a desordem técn
 * **CORS & Segurança:** Configuração pronta para integração com front-ends modernos.
 
 ---
+## ☁️ Cloud-Ready Development
+
+O **MatchCarreira** está totalmente preparado para o desenvolvimento em nuvem. Graças ao **GitHub Codespaces** e **DevContainers**, você pode rodar todo o ecossistema (API + PostgreSQL + Redis) diretamente no seu navegador, eliminando a "desordem técnica" de configuração local.
+
+<div align="center">
+
+[![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Abrir+Projeto&color=24292e&logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=KelvynAmaral/match-carreira-backend)
+
+</div>
+
 
 ## 📖 Documentação da API
 
