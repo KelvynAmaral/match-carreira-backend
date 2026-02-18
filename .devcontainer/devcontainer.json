@@ -1,18 +1,13 @@
 {
   "name": "MatchCarreira Dev",
   "image": "mcr.microsoft.com/devcontainers/java:21-bullseye",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
   "customizations": {
     "vscode": {
       "extensions": [
         "vscjava.vscode-java-pack",
-        "vscjava.vscode-spring-boot-dashboard",
-        "ms-azuretools.vscode-docker"
+        "vscjava.vscode-spring-boot-dashboard"
       ]
     }
   },
-  "remoteUser": "vscode",
-  "postCreateCommand": "mvn clean install -DskipTests"
+  "remoteUser": "vscode"
 }
