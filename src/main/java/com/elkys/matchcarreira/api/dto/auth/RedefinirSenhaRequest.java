@@ -1,4 +1,4 @@
-package com.elkys.matchcarreira.api.dto;
+package com.elkys.matchcarreira.api.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

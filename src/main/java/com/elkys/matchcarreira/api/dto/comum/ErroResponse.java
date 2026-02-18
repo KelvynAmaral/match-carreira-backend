@@ -1,4 +1,4 @@
-package com.elkys.matchcarreira.api.dto;
+package com.elkys.matchcarreira.api.dto.comum;
 
 import java.time.Instant;
 import java.util.List;

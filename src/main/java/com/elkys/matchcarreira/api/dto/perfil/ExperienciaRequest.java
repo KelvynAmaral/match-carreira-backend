@@ -1,4 +1,4 @@
-package com.elkys.matchcarreira.api.dto;
+package com.elkys.matchcarreira.api.dto.perfil;
 
 import java.time.LocalDate;
 
