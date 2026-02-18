@@ -1,5 +1,6 @@
 package com.elkys.matchcarreira.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String senha;
 
     private String nome;
@@ -31,4 +33,6 @@ public class Usuario {
     protected void onCreate() {
         this.criadoEm = LocalDateTime.now();
     }
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Curriculo curriculo;
 }

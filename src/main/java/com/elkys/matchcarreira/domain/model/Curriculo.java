@@ -1,5 +1,7 @@
 package com.elkys.matchcarreira.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -18,15 +20,18 @@ public class Curriculo {
 
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "resumo_profissional", columnDefinition = "TEXT")
     private String resumoProfissional;
 
     @OneToMany(mappedBy = "curriculo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ExperienciaProfissional> experiencias = new ArrayList<>();
 
     @OneToMany(mappedBy = "curriculo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<FormacaoAcademica> formacoes = new ArrayList<>();
 
     @ElementCollection

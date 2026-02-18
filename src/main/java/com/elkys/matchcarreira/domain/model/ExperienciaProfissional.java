@@ -1,5 +1,6 @@
 package com.elkys.matchcarreira.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -15,8 +16,9 @@ public class ExperienciaProfissional {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curriculo_id")
+    @JsonBackReference
     private Curriculo curriculo;
 
     private String empresa;
