@@ -3,33 +3,31 @@ package com.elkys.matchcarreira.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "curriculos")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder // Facilita a criação automática no UsuarioService
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class Curriculo {
 
     @Id
-    private UUID id; // Removido o @GeneratedValue, pois usaremos o ID do Usuario
+    private UUID id; // SEM @GeneratedValue. O ID vem do Usuario.
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId // O ID desta entidade será o mesmo ID da entidade Usuario
+    @OneToOne
+    @MapsId // Faz o ID desta classe ser o mesmo ID da classe Usuario
     @JoinColumn(name = "usuario_id")
-    @JsonIgnore // Essencial para não travar o Jackson no loop infinito
+    @JsonIgnore
     private Usuario usuario;
 
     @Column(name = "resumo_profissional", columnDefinition = "TEXT")
     private String resumoProfissional;
 
-    private String cargoDesejado; // Adicionado para facilitar o "Match" com vagas
+    @Column(name = "cargo_desejado")
+    private String cargoDesejado;
 
     @OneToMany(mappedBy = "curriculo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExperienciaProfissional> experiencias = new ArrayList<>();

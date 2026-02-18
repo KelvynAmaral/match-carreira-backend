@@ -1,28 +1,21 @@
 package com.elkys.matchcarreira.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.UUID;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "experiencias_profissionais")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class ExperienciaProfissional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curriculo_id")
-    @JsonBackReference
-    private Curriculo curriculo;
 
     private String empresa;
     private String cargo;
@@ -30,12 +23,12 @@ public class ExperienciaProfissional {
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(name = "data_inicio")
     private LocalDate dataInicio;
-
-    @Column(name = "data_fim")
     private LocalDate dataFim;
+    private boolean atual;
 
-    @Column(name = "trabalho_atual")
-    private boolean trabalhoAtual;
+    @ManyToOne
+    @JoinColumn(name = "curriculo_id")
+    @JsonIgnore // Evita recursão infinita no GET
+    private Curriculo curriculo;
 }

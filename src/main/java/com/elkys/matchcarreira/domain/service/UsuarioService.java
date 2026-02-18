@@ -17,7 +17,7 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final CurriculoRepository curriculoRepository; // Adicionado para o vínculo
+    private final CurriculoRepository curriculoRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -29,14 +29,12 @@ public class UsuarioService {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(dto.nome());
         novoUsuario.setEmail(dto.email());
-
-        String senhaCriptografada = passwordEncoder.encode(dto.senha());
-        novoUsuario.setSenha(senhaCriptografada);
+        novoUsuario.setSenha(passwordEncoder.encode(dto.senha()));
 
         Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
 
         Curriculo novoCurriculo = Curriculo.builder()
-                .usuario(usuarioSalvo)
+                .usuario(usuarioSalvo) // Aqui o MapsId entra em acao
                 .resumoProfissional("Perfil recem-criado. Complete suas informacoes.")
                 .build();
 

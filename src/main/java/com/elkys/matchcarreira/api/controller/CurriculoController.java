@@ -15,7 +15,6 @@ public class CurriculoController {
 
     private final CurriculoService curriculoService;
 
-    // Mudamos para PUT porque o curriculo já nasce com o Usuario (via UsuarioService)
     @PutMapping
     public ResponseEntity<Curriculo> atualizar(@PathVariable UUID usuarioId, @RequestBody Curriculo curriculo) {
         Curriculo salvo = curriculoService.atualizar(usuarioId, curriculo);
