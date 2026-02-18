@@ -1,28 +1,21 @@
 package com.elkys.matchcarreira.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.UUID;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "formacoes_academicas")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder // <--- ESTA ANOTAÇÃO RESOLVE O ERRO VERMELHO
 public class FormacaoAcademica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curriculo_id")
-    @JsonBackReference
-    private Curriculo curriculo;
 
     private String instituicao;
     private String curso;
@@ -33,4 +26,11 @@ public class FormacaoAcademica {
 
     @Column(name = "data_fim")
     private LocalDate dataFim;
+
+    private boolean atual;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curriculo_id")
+    @JsonIgnore
+    private Curriculo curriculo;
 }

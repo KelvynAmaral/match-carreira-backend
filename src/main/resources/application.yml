@@ -2,15 +2,29 @@ spring:
   application:
     name: match-carreira-api
 
+  # --- CONFIGURAÇÃO DE E-MAIL (MAILTRAP) ---
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: bacd2d9b4454f9
+    password: 03892fe19ad78f
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # --- CONFIGURAÇÃO DO BANCO DE DADOS ---
   datasource:
     url: jdbc:postgresql://localhost:5432/match_carreira_db
     username: admin
     password: password123
     driver-class-name: org.postgresql.Driver
 
+  # --- CONFIGURAÇÃO DO JPA / HIBERNATE ---
   jpa:
     hibernate:
-      # Gera tabelas automaticamente
       ddl-auto: update
     show-sql: true
     properties:
@@ -19,17 +33,27 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         physical_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
+  # --- CACHE (REDIS) ---
   data:
     redis:
       host: localhost
       port: 6379
 
-# Configuracao de seguranca customizada
+# --- CONFIGURAÇÃO DO SWAGGER (SPRINGDOC) ---
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  api-docs:
+    path: /v3/api-docs
+
+# --- SEGURANÇA CUSTOMIZADA ---
 api:
   security:
     token:
       secret: ${JWT_SECRET:match-carreira-secret-key-32-chars-minimum}
 
+# --- LOGGING ---
 logging:
   level:
     org.hibernate.SQL: DEBUG
