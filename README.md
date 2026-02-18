@@ -4,14 +4,14 @@ O **MatchCarreira** é o motor de uma plataforma de aceleração de carreira. De
 
 <div align="center">
 
-  ### 🛠 Tech Stack
-  
-  ![Java](https://img.shields.io/badge/Java_21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-  ![Spring](https://img.shields.io/badge/Spring_Boot_3.2-6DB33F?style=flat-square&logo=spring&logoColor=white)
-  ![JWT](https://img.shields.io/badge/JWT_Security-black?style=flat-square&logo=jsonwebtokens&logoColor=white)
-  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-  ![Docker](https://img.shields.io/badge/Docker_Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
-  ![Swagger](https://img.shields.io/badge/OpenAPI_3-85EA2D?style=flat-square&logo=swagger&logoColor=black)
+### 🛠 Tech Stack
+
+![Java](https://img.shields.io/badge/Java_21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/Spring_Boot_3.2-6DB33F?style=flat-square&logo=spring&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT_Security-black?style=flat-square&logo=jsonwebtokens&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker_Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Swagger](https://img.shields.io/badge/OpenAPI_3-85EA2D?style=flat-square&logo=swagger&logoColor=black)
 
 </div>
 
@@ -77,5 +77,3 @@ A arquitetura do **MatchCarreira** foi refatorada para eliminar a desordem técn
 Com a aplicação em execução via **Docker**, a interface interativa fica disponível para testes imediatos:
 
 [ ![Swagger](https://img.shields.io/badge/Acessar_Swagger_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) ](http://localhost:8080/swagger-ui.html)
-
-
