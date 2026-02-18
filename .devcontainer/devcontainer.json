@@ -1,40 +1,18 @@
 {
-  "name": "MatchCarreira Dev Environment",
-  "build": {
-    "dockerfile": "Dockerfile"
+  "name": "MatchCarreira Dev",
+  "image": "mcr.microsoft.com/devcontainers/java:21-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "customizations": {
     "vscode": {
-      "settings": {
-        "java.configuration.runtimes": [
-          {
-            "name": "JavaSE-21",
-            "path": "/usr/local/sdkman/candidates/java/current",
-            "default": true
-          }
-        ]
-      },
       "extensions": [
         "vscjava.vscode-java-pack",
         "vscjava.vscode-spring-boot-dashboard",
-        "vmware.vscode-spring-boot",
-        "vscjava.vscode-maven-pack",
-
-        "ms-azuretools.vscode-docker",
-        "mtakaki.vscode-sql-formatter",
-        "cksharma.vscode-postgresql",
-
-        "christian-kohler.path-intellisense",
-        "eamodio.gitlens",
-        "pkief.material-icon-theme"
+        "ms-azuretools.vscode-docker"
       ]
     }
   },
   "remoteUser": "vscode",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest"
-    }
-  },
   "postCreateCommand": "mvn clean install -DskipTests"
 }
