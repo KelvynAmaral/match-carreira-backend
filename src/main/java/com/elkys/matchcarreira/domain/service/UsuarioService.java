@@ -1,6 +1,9 @@
 package com.elkys.matchcarreira.domain.service;
 
+import com.elkys.matchcarreira.api.dto.UsuarioRequest;
+import com.elkys.matchcarreira.domain.model.Curriculo;
 import com.elkys.matchcarreira.domain.model.Usuario;
+import com.elkys.matchcarreira.domain.repository.CurriculoRepository;
 import com.elkys.matchcarreira.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,20 +17,34 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder; // Injetando o codificador
+    private final CurriculoRepository curriculoRepository; // Adicionado para o vínculo
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Usuario cadastrar(Usuario usuario) {
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            throw new RuntimeException("E-mail já cadastrado.");
+    public Usuario cadastrar(UsuarioRequest dto) {
+        if (usuarioRepository.findByEmail(dto.email()).isPresent()) {
+            throw new RuntimeException("E-mail ja cadastrado.");
         }
 
-        // Security - senha criptografada: By Kelvyn
-        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
-        usuario.setSenha(senhaCriptografada);
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(dto.nome());
+        novoUsuario.setEmail(dto.email());
 
-        return usuarioRepository.save(usuario);
+        String senhaCriptografada = passwordEncoder.encode(dto.senha());
+        novoUsuario.setSenha(senhaCriptografada);
+
+        Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
+
+        Curriculo novoCurriculo = Curriculo.builder()
+                .usuario(usuarioSalvo)
+                .resumoProfissional("Perfil recem-criado. Complete suas informacoes.")
+                .build();
+
+        curriculoRepository.save(novoCurriculo);
+
+        return usuarioSalvo;
     }
+
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }

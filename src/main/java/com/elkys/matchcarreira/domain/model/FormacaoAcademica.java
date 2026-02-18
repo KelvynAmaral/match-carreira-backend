@@ -3,13 +3,16 @@ package com.elkys.matchcarreira.domain.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.UUID;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "formacoes_academicas")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FormacaoAcademica {
 
     @Id

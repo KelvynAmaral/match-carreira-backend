@@ -1,7 +1,6 @@
 package com.elkys.matchcarreira.domain.service;
 
 import com.elkys.matchcarreira.domain.model.Curriculo;
-import com.elkys.matchcarreira.domain.model.Usuario;
 import com.elkys.matchcarreira.domain.repository.CurriculoRepository;
 import com.elkys.matchcarreira.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,29 +17,20 @@ public class CurriculoService {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-    public Curriculo salvar(UUID usuarioId, Curriculo curriculo) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public Curriculo atualizar(UUID usuarioId, Curriculo dadosAtualizados) {
+        // Busca o currículo existente que foi criado no cadastro do usuário
+        Curriculo curriculoExistente = buscarPorUsuarioId(usuarioId);
 
-        // Vincula as entidades para o JPA salvar em cascata
-        curriculo.setUsuario(usuario);
 
-        // Garantir que as experiências e formações conheçam o currículo pai
-        if (curriculo.getExperiencias() != null) {
-            curriculo.getExperiencias().forEach(exp -> exp.setCurriculo(curriculo));
-        }
-        if (curriculo.getFormacoes() != null) {
-            curriculo.getFormacoes().forEach(form -> form.setCurriculo(curriculo));
-        }
+        curriculoExistente.setResumoProfissional(dadosAtualizados.getResumoProfissional());
+        curriculoExistente.setCargoDesejado(dadosAtualizados.getCargoDesejado());
+        curriculoExistente.setCompetencias(dadosAtualizados.getCompetencias());
 
-        return curriculoRepository.save(curriculo);
+        return curriculoRepository.save(curriculoExistente);
     }
 
-    public Curriculo buscarPorUsuario(UUID usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        return curriculoRepository.findByUsuario(usuario)
-                .orElseThrow(() -> new RuntimeException("Currículo não encontrado para este usuário"));
+    public Curriculo buscarPorUsuarioId(UUID usuarioId) {
+        return curriculoRepository.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Curriculo nao encontrado para o usuario: " + usuarioId));
     }
 }
