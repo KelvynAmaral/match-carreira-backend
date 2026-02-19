@@ -2,10 +2,11 @@ package com.elkys.matchcarreira.domain.service;
 
 import com.elkys.matchcarreira.api.dto.usuario.UsuarioRequest;
 import com.elkys.matchcarreira.api.dto.usuario.UsuarioResponse;
-import com.elkys.matchcarreira.domain.model.Curriculo;
+import com.elkys.matchcarreira.domain.model.perfil.Curriculo;
 import com.elkys.matchcarreira.domain.model.Usuario;
 import com.elkys.matchcarreira.domain.repository.CurriculoRepository;
 import com.elkys.matchcarreira.domain.repository.UsuarioRepository;
+import com.elkys.matchcarreira.infrastructure.exception.RegraNegocioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,31 +24,32 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponse cadastrar(UsuarioRequest dto) {
-        // 1. Validação de Negócio (Combate ao Clutter/Dados Duplicados)
-        if (usuarioRepository.existsByEmail(dto.email())) {
-            throw new RuntimeException("E-mail já cadastrado no MatchCarreira.");
+        if (!dto.senhasConferem()) {
+            throw new RegraNegocioException("As senhas digitadas não coincidem.");
         }
 
-        // 2. Mapeamento e Persistência do Usuário
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(dto.nome());
-        novoUsuario.setEmail(dto.email());
-        novoUsuario.setSenha(passwordEncoder.encode(dto.senha()));
+        if (usuarioRepository.existsByEmail(dto.email())) {
+            throw new RegraNegocioException("E-mail já cadastrado no MatchCarreira.");
+        }
+
+        Usuario novoUsuario = Usuario.builder()
+                .nome(dto.nome())
+                .email(dto.email())
+                .senha(passwordEncoder.encode(dto.senha()))
+                .build();
 
         Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
 
-        // 3. Automação Invisível: Criação do Currículo vinculado via @MapsId
         Curriculo novoCurriculo = Curriculo.builder()
                 .usuario(usuarioSalvo)
-                .resumoProfissional("Perfil recém-criado. Complete suas informações para aumentar seu alcance.")
+                .resumoProfissional("Perfil recém-criado na Elkys. Complete suas informações!")
                 .build();
 
         curriculoRepository.save(novoCurriculo);
 
-        // 4. Retorno Seguro via Record/DTO
         return new UsuarioResponse(usuarioSalvo);
     }
-
+    @Transactional(readOnly = true)
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }
