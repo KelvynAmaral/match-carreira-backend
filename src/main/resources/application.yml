@@ -2,40 +2,40 @@ spring:
   application:
     name: match-carreira-api
 
-  # --- CONFIGURACAO DE E-MAIL (MAILTRAP) ---
+  # --- CONFIGURAÇÃO DE E-MAIL (MAILTRAP) ---
   mail:
     host: ${MAIL_HOST:sandbox.smtp.mailtrap.io}
     port: ${MAIL_PORT:2525}
     username: ${MAIL_USERNAME:seu_user_fake}
     password: ${MAIL_PASSWORD:sua_senha_fake}
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
-  # --- CONFIGURACAO DO BANCO DE DADOS (POSTGRESQL) ---
+  # --- CONFIGURAÇÃO DO BANCO DE DADOS (POSTGRESQL) ---
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:5432/match_carreira_db
     username: ${DB_USERNAME:admin}
     password: ${DB_PASSWORD:password123}
     driver-class-name: org.postgresql.Driver
-    # Pool de conexões otimizado
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
 
-  # --- CONFIGURACAO DO JPA / HIBERNATE ---
+  # --- CONFIGURAÇÃO DO JPA / HIBERNATE ---
   jpa:
     hibernate:
-      # 'update' para desenvolvimento (ajusta tabelas automaticamente)
-      # 'validate' ou 'none' para produção
-      ddl-auto: ${JPA_DDL:update}
+      # Como usamos Flyway (V1__...), o Hibernate apenas valida o esquema
+      ddl-auto: ${JPA_DDL:validate}
     show-sql: ${SHOW_SQL:false}
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        # Converte CamelCase (Java) para snake_case (Postgres)
         physical_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
   # --- CACHE E SESSÃO (REDIS) ---
@@ -43,11 +43,10 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      #password: ${REDIS_PASSWORD:} # Se necessário futuramente
   cache:
     type: redis
 
-# --- CONFIGURACAO DO SWAGGER (SPRINGDOC) ---
+# --- CONFIGURAÇÃO DO SWAGGER (SPRINGDOC) ---
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -56,8 +55,7 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
-# --- SEGURANCA CUSTOMIZADA (JWT) ---
-# Essencial para o fluxo 'Sem Estado' que você definiu
+# --- SEGURANÇA CUSTOMIZADA (JWT) ---
 api:
   security:
     token:
