@@ -1,6 +1,6 @@
 package com.elkys.matchcarreira.api.dto.perfil;
 
-import com.elkys.matchcarreira.domain.model.Curriculo;
+import com.elkys.matchcarreira.domain.model.perfil.Curriculo;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,7 +14,8 @@ public record PerfilResponse(
         String resumoProfissional,
         String cargoDesejado,
         List<ExperienciaResponse> experiencias,
-        List<FormacaoResponse> formacoes
+        List<FormacaoResponse> formacoes,
+        List<String> competencias
 ) {
     public PerfilResponse(Curriculo curriculo) {
         this(
@@ -27,7 +28,8 @@ public record PerfilResponse(
                 curriculo.getResumoProfissional(),
                 curriculo.getCargoDesejado(),
                 curriculo.getExperiencias().stream().map(ExperienciaResponse::new).toList(),
-                curriculo.getFormacoes().stream().map(FormacaoResponse::new).toList()
+                curriculo.getFormacoes().stream().map(FormacaoResponse::new).toList(),
+                curriculo.getCompetencias()
         );
     }
 }

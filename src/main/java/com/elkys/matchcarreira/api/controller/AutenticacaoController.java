@@ -4,13 +4,17 @@ import com.elkys.matchcarreira.api.dto.auth.LoginRequest;
 import com.elkys.matchcarreira.api.dto.auth.RedefinirSenhaRequest;
 import com.elkys.matchcarreira.api.dto.auth.SolicitarRecuperacaoRequest;
 import com.elkys.matchcarreira.api.dto.auth.TokenResponse;
+import com.elkys.matchcarreira.api.dto.usuario.UsuarioRequest;
+import com.elkys.matchcarreira.api.dto.usuario.UsuarioResponse;
 import com.elkys.matchcarreira.domain.model.Usuario;
 import com.elkys.matchcarreira.domain.repository.UsuarioRepository;
 import com.elkys.matchcarreira.domain.service.RecuperacaoSenhaService;
+import com.elkys.matchcarreira.domain.service.UsuarioService;
 import com.elkys.matchcarreira.infrastructure.exception.RegraNegocioException; // Importante
 import com.elkys.matchcarreira.infrastructure.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,12 @@ public class AutenticacaoController {
     private final TokenService tokenService;
     private final RecuperacaoSenhaService recuperacaoSenhaService;
 
+    private final UsuarioService usuarioService;
+
+    @PostMapping("/cadastro")
+    public ResponseEntity<UsuarioResponse> cadastrar(@RequestBody @Valid UsuarioRequest dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrar(dto));
+    }
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid LoginRequest data) {
 

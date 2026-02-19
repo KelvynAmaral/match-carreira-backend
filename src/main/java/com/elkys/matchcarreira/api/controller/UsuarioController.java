@@ -1,9 +1,10 @@
 package com.elkys.matchcarreira.api.controller;
 
 import com.elkys.matchcarreira.api.dto.usuario.UsuarioRequest;
-import com.elkys.matchcarreira.api.dto.usuario.UsuarioResponse; // Importa a nova Response
-import com.elkys.matchcarreira.domain.model.Usuario;
+import com.elkys.matchcarreira.api.dto.usuario.UsuarioResponse;
 import com.elkys.matchcarreira.domain.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,20 +16,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
+@Tag(name = "Usuários", description = "Gerenciamento administrativo de usuários")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+
     @PostMapping
+    @Operation(summary = "Criar um novo usuário (Admin/Manual)")
     public ResponseEntity<UsuarioResponse> criar(@RequestBody @Valid UsuarioRequest dto) {
-        var usuario = usuarioService.cadastrar(dto);
-        // Retorna apenas o essencial após o cadastro
-        return ResponseEntity.status(HttpStatus.CREATED).body(new UsuarioResponse(usuario));
+        UsuarioResponse response = usuarioService.cadastrar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
+    @Operation(summary = "Lista todos os usuários cadastrados")
     public ResponseEntity<List<UsuarioResponse>> listar() {
-        // Converte a lista de entidades para uma lista de DTOs leves
         var usuarios = usuarioService.listarTodos().stream()
                 .map(UsuarioResponse::new)
                 .toList();
