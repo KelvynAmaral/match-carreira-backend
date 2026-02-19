@@ -1,4 +1,4 @@
-package com.elkys.matchcarreira.domain.model;
+package com.elkys.matchcarreira.domain.model.perfil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -27,8 +27,8 @@ public class ExperienciaProfissional {
     private LocalDate dataFim;
     private boolean atual;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curriculo_id")
-    @JsonIgnore // Evita recursão infinita no GET
+    @JsonIgnore
     private Curriculo curriculo;
 }

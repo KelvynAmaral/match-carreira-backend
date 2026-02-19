@@ -1,6 +1,6 @@
 package com.elkys.matchcarreira.domain.repository;
 
-import com.elkys.matchcarreira.domain.model.Curriculo;
+import com.elkys.matchcarreira.domain.model.perfil.Curriculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

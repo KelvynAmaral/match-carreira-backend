@@ -1,4 +1,4 @@
-package com.elkys.matchcarreira.domain.model;
+package com.elkys.matchcarreira.domain.model.perfil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "formacoes_academicas")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-@Builder // <--- ESTA ANOTAÇÃO RESOLVE O ERRO VERMELHO
+@Builder
 public class FormacaoAcademica {
 
     @Id

@@ -1,5 +1,6 @@
-package com.elkys.matchcarreira.domain.model;
+package com.elkys.matchcarreira.domain.model.perfil;
 
+import com.elkys.matchcarreira.domain.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

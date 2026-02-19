@@ -1,9 +1,11 @@
 package com.elkys.matchcarreira.domain.model;
 
+import com.elkys.matchcarreira.domain.model.perfil.Curriculo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +18,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 @Builder
 public class Usuario implements UserDetails {
 
@@ -41,9 +41,13 @@ public class Usuario implements UserDetails {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    @CreationTimestamp // Simplifica o seu código, o Hibernate cuida disso
+    @CreationTimestamp
     @Column(name = "criado_em", updatable = false)
     private LocalDateTime criadoEm;
+
+    @UpdateTimestamp // Essencial para BI: saber a última atualização do perfil
+    @Column(name = "atualizado_em")
+    private LocalDateTime atualizadoEm;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Curriculo curriculo;
