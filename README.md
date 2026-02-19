@@ -1,13 +1,14 @@
 # MatchCarreira API
 
-O **MatchCarreira** é o motor de uma plataforma de aceleração de carreira. Desenvolvido para ser resiliente e escalável, o sistema utiliza containerização e automação de banco de dados para garantir paridade entre os ambientes de desenvolvimento e produção.
+O **MatchCarreira** é o motor de uma plataforma de aceleração de carreira. Desenvolvido para ser resiliente e escalável, o sistema utiliza containerização, automação de banco de dados e cache em memória para garantir alta performance no processamento de perfis profissionais.
 
 <div align="center">
 
 ### 🛠 Tech Stack
 
 ![Java](https://img.shields.io/badge/Java_21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/Spring_Boot_3.2-6DB33F?style=flat-square&logo=spring&logoColor=white)
+![Spring](https://img.shields.io/badge/Spring_Boot_3.4-6DB33F?style=flat-square&logo=spring&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis_Cache-DC382D?style=flat-square&logo=redis&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT_Security-black?style=flat-square&logo=jsonwebtokens&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker_Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -15,60 +16,64 @@ O **MatchCarreira** é o motor de uma plataforma de aceleração de carreira. De
 
 </div>
 
-## Infraestrutura com Docker
-A aplicação está pronta para rodar em ambientes isolados, garantindo que o banco de dados e as dependências subam corretamente com um único comando.
+## Infraestrutura e Fluxo de Dados
+A aplicação utiliza **Redis** para cache de perfis, reduzindo drasticamente a carga no banco de dados em operações de leitura frequentes.
 
 ```mermaid
-    
 flowchart TD
     Client[Clientes Web/Mobile] --> API[Spring Boot API]
     API --> Auth[Spring Security + JWT]
-    API --> Services[Serviços / Regras de Negócio]
+    API --> Cache{Redis Cache}
+    Cache -- Miss --> Services[Serviços / Regras de Negócio]
     Services --> DB[(PostgreSQL)]
+    Cache -- Hit --> API
     
     subgraph Infra ["Infraestrutura"]
     DB
+    Redis[Redis Server]
     Docker[Docker / Compose]
     end
 
-    %% Definição de Classes de Estilo
     classDef interface fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
     classDef logic fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100;
     classDef security fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#2e7d32;
     classDef data fill:#ede7f6,stroke:#4527a0,stroke-width:2px,color:#4527a0;
+    classDef cache fill:#ffebee,stroke:#c62828,stroke-width:2px,color:#c62828;
     classDef infra fill:#f5f5f5,stroke:#424242,stroke-dasharray: 5 5;
 
-    %% Aplicação das Classes
     class Client interface;
     class API,Services logic;
     class Auth security;
     class DB data;
+    class Cache,Redis cache;
     class Infra infra;
     
 ```
 
 ## 🏗️ Arquitetura e Engenharia
 
-A arquitetura do **MatchCarreira** foi refatorada para eliminar a desordem técnica, agrupando responsabilidades por contexto de negócio (Domain-Driven Design simplificado):
+A arquitetura do **MatchCarreira** agrupa responsabilidades por contexto de negócio (*Bounded Contexts*):
 
 | Contexto | Responsabilidade |
 | :--- | :--- |
-| 🔐 **auth** | Autenticação robusta e Recuperação de Senha. |
-| 👤 **perfil** | Gestão de Currículos, Experiências e Formações. |
-| ⚙️ **usuário** | Gestão de Contas e preferências do sistema. |
+| 🔐 **auth** | Autenticação JWT, Registro e Recuperação de Senha. |
+| 👤 **perfil** | Gestão de Currículos, Experiências, Formações e Competências. |
+| ⚙️ **usuário** | Gestão de Contas e automação de criação de perfil. |
 
 ---
 
 ## Boas Práticas e Diferenciais Técnicos
 
+#### Performance e Cache
+* **Redis Integration:** Cache estratégico de perfis utilizando as anotações `@Cacheable` e `@CacheEvict`.
+* **Serialização Customizada:** Suporte total a tipos `java.time` (como `LocalDate`) no Redis através da configuração do módulo `jsr310`.
 
-#### Refinamento de Código
-* **Padrão DTO:** Separação entre *Solicitação* (entrada) e *Resposta* (saída) para segurança dos dados.
-* **Imutabilidade com Records:** Uso de *Java Records* para garantir objetos concisos e thread-safe.
+####  Refinamento de Código
+* **Imutabilidade com Records:** Uso de *Java Records* para a criação de DTOs concisos, seguros e imutáveis.
+* **Global Exception Handling:** Tratamento centralizado de exceções (erros 404, 403, 409) para garantir respostas padronizadas e limpas.
 
-#### Infraestrutura Integrada
-* **Auditoria Automática:** Rastreabilidade total com campos `criado_em` e `atualizado_em` via JPA.
-* **CORS & Segurança:** Configuração pronta para integração com front-ends modernos.
+* **Criação Reativa:** Ao realizar o cadastro de um usuário, o sistema gera automaticamente a estrutura inicial de seu currículo.
+* **Padronização Flyway:** Uso de migrations versionadas para garantir a integridade do schema do banco de dados em qualquer ambiente de execução.
 
 ---
 ## ☁️ Cloud-Ready Development
