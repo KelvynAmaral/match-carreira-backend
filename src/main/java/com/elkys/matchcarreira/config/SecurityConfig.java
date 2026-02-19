@@ -36,13 +36,18 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/auth/**").permitAll();
-
                     req.requestMatchers(HttpMethod.POST, "/usuarios").permitAll();
 
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
 
                     req.anyRequest().authenticated();
                 })
+                // EVITA O ERRO DE "STATIC RESOURCE".
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(401);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"erro\": \"Token invalido ou ausente\"}");
+                }))
                 .addFilterBefore(filterJWT, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
